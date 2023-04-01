@@ -46,7 +46,7 @@ DHT dht_out(DHTPIN_OUT, DHTTYPE);
 OneWire oneWire(WaterTemp_PIN);
 DallasTemperature DS18B20(&oneWire);
 
-// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+//Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 
@@ -152,7 +152,9 @@ void loop() {
   String data = (String) temp;
   String data2 = (String) humidity;
   String data3 = (String) WaterTemp;
-  String tempQuery = "?temperature="+data+"&humidity="+data2+"&WaterTemp="+data3+"&data="+Data_Uno;
+  String data4 = (String) temp_out;
+  String data5 = (String) humidity_out;
+  String tempQuery = "?temperature="+data+"&humidity="+data2+"&WaterTemp="+data3+"&data="+Data_Uno+"&temp_out="+data4+"&humidity_out="+data5;
 
   // Sending Data
   sendData(tempQuery);
