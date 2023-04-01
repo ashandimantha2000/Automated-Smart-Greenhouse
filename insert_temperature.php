@@ -1,12 +1,14 @@
 <?php
 
-if(isset($_GET["temperature"]) && isset($_GET["humidity"]) && isset($_GET["WaterTemp"]) && isset($_GET["ldr"]) && isset($_GET["co2"])) {
+if(isset($_GET["temperature"]) && isset($_GET["humidity"]) && isset($_GET["WaterTemp"]) && isset($_GET["ldr"]) && isset($_GET["co2"]) && isset($_GET["temp_out"]) && isset($_GET["humidity_out"])) {
 
    $temperature = $_GET["temperature"]; 
    $humidity = $_GET["humidity"];
    $WaterTemp = $_GET["WaterTemp"]; 
    $ldr = $_GET["ldr"]; 
    $co2 = $_GET["co2"]; 
+   $temp_out = $_GET["temp_out"];
+   $humidity_out = $_GET["humidity_out"];
 
 
    $servername = "localhost";
@@ -21,7 +23,7 @@ if(isset($_GET["temperature"]) && isset($_GET["humidity"]) && isset($_GET["Water
       die("MySQL connection failed: " . $connection->connect_error);
    }
 
-   $sql = "INSERT INTO greenhouse (temp,humidity,co2,water_temp,ligh) VALUES ($temperature,$humidity,$co2,$WaterTemp,$ldr)";
+   $sql = "INSERT INTO greenhouse (temp,humidity,co2,water_temp,ligh,temp_out,humidity_out) VALUES ($temperature,$humidity,$co2,$WaterTemp,$ldr,$temp_out,$humidity_out)";
 
    if ($connection->query($sql) === TRUE) {
       echo "New record created successfully";
