@@ -20,13 +20,16 @@ String PHP_FILE_NAME   = "/insert_temperature.php";  //REPLACE WITH YOUR PHP FIL
 //defining variables
 #define DHTPIN 15         // Digital pin connected to the DHT sensor
 #define DHTTYPE DHT22    // DHT 22
+#define DHTPIN_OUT 27     // Digital pin connected to the DHT sensor (External)
 #define WaterTemp_PIN  5    //Water Temperature
 #define RXp2 16           //RX
 #define TXp2 17           //TX
 int LED_WIFI = 4;          //Wifi LED
-int Thungston_LED = 13; //Thungston bulb relay
-float temp;                       //t=temperature
-float humidity;                    //h=humidity
+int Thungston_LED = 14; //Thungston bulb relay
+float temp;                       //temperature (in)
+float humidity;                   //humidity (in)
+float temp_out;                   //temperature (out)
+float humidity_out;               //humidity (out)
 int CO2_sensorValue;    //Assigning initial value to CO2
 float WaterTemp; // temperature in Celsius
 String Data_Uno; //   String to store data from Uno
@@ -37,6 +40,7 @@ String Data_Uno; //   String to store data from Uno
 
 //assiging to DHT
 DHT dht(DHTPIN, DHTTYPE);
+DHT dht_out(DHTPIN_OUT, DHTTYPE);
 
 ////assiging to Water Temp
 OneWire oneWire(WaterTemp_PIN);
@@ -59,6 +63,7 @@ void setup() {
     Serial.print(".");
   }
   dht.begin();
+  dht_out.begin();
   DS18B20.begin();
   delay(2000);
 
@@ -99,9 +104,13 @@ void loop() {
   Data_Uno = Serial2.readString();
   Serial.println(Data_Uno);
 
-  //DHT22
+  //DHT22 (In)
   temp = dht.readTemperature();
   humidity = dht.readHumidity();
+
+  //DHT22 (Out)
+  temp_out = dht_out.readTemperature();
+  humidity_out = dht_out.readHumidity();
 
  
   if (isnan(humidity) || isnan(temp))  // Check if any reads failed and exit early (to try again).
@@ -117,12 +126,20 @@ void loop() {
   WaterTemp = DS18B20.getTempCByIndex(0); 
 
   //Print in Serial Monitor
-  //DHT22 Serial Print
-  Serial.print("Temperature: ");
+  //DHT22 (In) Serial Print
+  Serial.print("Temperature (In) : ");
   Serial.print(temp);
   Serial.println("°C");
-  Serial.print("Humidity: ");
+  Serial.print("Humidity (In) : ");
   Serial.print(humidity);
+  Serial.println("%");
+
+  //DHT22 (In) Serial Print
+  Serial.print("Temperature (Out) : ");
+  Serial.print(temp_out);
+  Serial.println("°C");
+  Serial.print("Humidity (Out) : ");
+  Serial.print(humidity_out);
   Serial.println("%");
 
   //Water Temperature
@@ -159,13 +176,21 @@ void loop() {
 
   display.println("Group AZ\n");
 
-  display.print("Humidity : ");
+  display.print("Temp (In) : ");
+  display.print(temp);
+  display.println("C");
+
+  display.print("Humidi (In) : ");
   display.print(humidity);
   display.println("%");
 
-  display.print("Temperature: ");
-  display.print(temp);
+  display.print("Temp (Out) : ");
+  display.print(temp_out);
   display.println("C");
+
+  display.print("Humidi (Out) : ");
+  display.print(humidity_out);
+  display.println("%");
 
   display.print("Water Temp.: ");
   display.print(WaterTemp);
