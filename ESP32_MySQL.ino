@@ -14,6 +14,7 @@ const char password[] = "aiME7gY9";
 //Hostname and php declaration
 String HOST_NAME = "http://192.168.8.102"; // REPLACE WITH YOUR PC's IP ADDRESS
 String PHP_FILE_NAME   = "/insert_temperature.php";  //REPLACE WITH YOUR PHP FILE NAME
+// String tempQuery = "?temperature=31.0";
 
 
 //defining variables
@@ -30,7 +31,7 @@ int CO2_sensorValue;    //Assigning initial value to CO2
 float WaterTemp; // temperature in Celsius
 String Data_Uno; //   String to store data from Uno
 
-//Define screen sizes
+//Define screen variables
 #define SCREEN_WIDTH 128  // OLED display width, in pixels
 #define SCREEN_HEIGHT 64  // OLED display height, in pixels
 
@@ -134,7 +135,7 @@ void loop() {
   String data = (String) temp;
   String data2 = (String) humidity;
   String data3 = (String) WaterTemp;
-  String tempQuery = "?temperature="+data+"&humidity="+data2+"&WaterTemp="+data3+"&ldr="+LDR_value_str+"&co2="+CO2_value_str;
+  String tempQuery = "?temperature="+data+"&humidity="+data2+"&WaterTemp="+data3+"&data="+Data_Uno;
 
   // Sending Data
   sendData(tempQuery);
